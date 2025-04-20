@@ -22,7 +22,7 @@
           <small class="text-muted ms-2">
             <%= task.timestamp.strftime("%d.%m.%Y %H:%M") if task.timestamp %>
           </small>
-          <span class="badge bg-<%= task.done ? 'success' : 'warning' %> ms-2">
+          <span class="badge bg-<%= task.done ? "success" : "warning" %> ms-2">
             <%= task.done ? "Done" : "To do" %>
           </span>
         </div>
