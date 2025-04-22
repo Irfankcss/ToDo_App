@@ -1,24 +1,32 @@
-# README
+# TODO List - Ruby on Rails App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple and clean TODO list application built with Ruby on Rails.  
+The app allows users to manage their tasks efficiently with features like:
 
-Things you may want to cover:
+- Add new tasks
+- Edit existing tasks
+- Delete tasks
+- Mark tasks as done or not done
+- Filter tasks (All / Done / Not Done)
+- Sort tasks by creation date (Newest / Oldest)
 
-* Ruby version
+---
 
-* System dependencies
+## Technologies
 
-* Configuration
+- Ruby on Rails
+- SQLite3 (for local development)
+- Bootstrap 5
 
-* Database creation
+---
 
-* Database initialization
+## Installation
 
-* How to run the test suite
+To run the app locally, follow these steps:
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+git clone https://github.com/Irfankcss/ToDo_App.git
+cd ToDo_App
+bundle install
+rails db:migrate
+rails server
