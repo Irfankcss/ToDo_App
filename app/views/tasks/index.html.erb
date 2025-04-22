@@ -11,20 +11,30 @@
     <%= link_to "Show Done Tasks", tasks_path(filter: "done"), class: "btn btn-outline-success btn-sm me-2" %>
     <%= link_to "Show To do", tasks_path(filter: "not_done"), class: "btn btn-outline-warning btn-sm" %>
   </div>
-
-  <h5>Active tasks: <span class="badge bg-info text-dark"><%= @active_tasks.count %></span></h5>
-
+  <div class="mb-2">
+  <strong>Ukupno:</strong> <%= @total_tasks %> |
+  <strong>Aktivni:</strong> <%= @active_tasks_count %> |
+  <strong>Završeni:</strong> <%= @done_tasks_count %>
+</div>
+  
   <ul class="list-group mt-3">
-    <% @tasks.each do |task| %>
+    <% @tasks.sort_by {|task| task.done ? 1:0}.each do |task| %>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <div>
           <strong><%= task.title %></strong>
           <small class="text-muted ms-2">
-            <%= task.timestamp.strftime("%d.%m.%Y %H:%M") if task.timestamp %>
+          <small>Created: <%= task.created_at.strftime("%d.%m.%Y %H:%M") %></small>
           </small>
           <span class="badge bg-<%= task.done ? "success" : "warning" %> ms-2">
             <%= task.done ? "Done" : "To do" %>
           </span>
+        </div>
+        <div class="donebuttons">
+        <% if !task.done %>
+        <%= button_to "Mark as done", mark_done_task_path(task), method: :patch, class: "btn btn-sm btn-outline-success me-2" %>
+        <% else %>
+        <%= button_to "Mark as not done", mark_undone_task_path(task), method: :patch, class: "btn btn-sm btn-outline-warning me-2" %>
+        <% end %>
         </div>
         <div>
           <%= link_to "Edit", edit_task_path(task), class: "btn btn-sm btn-outline-primary me-2" %>
