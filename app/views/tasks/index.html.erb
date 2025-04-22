@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h1 class="mb-4">TO DO List</h1>
+  <h1 class="mb-4">TODO List</h1>
 
   <div class="mb-3">
     <%= link_to "New Task", new_task_path, class: "btn btn-primary" %>
@@ -17,10 +17,10 @@
   <strong>Završeni:</strong> <%= @done_tasks_count %>
 </div>
 <div class="mb-3">
-<h4>Sortiraj po:</h4>
+<h4>Sort by creation date:</h4>
 <%= form_with url: tasks_path, method: :get, local: true, class: "d-inline" do %>
   <%= hidden_field_tag :filter, params[:filter] %>
-  <%= select_tag :sort, options_for_select([['Najnoviji', 'desc'], ['Najstariji', 'asc']], params[:sort]), class: "form-select form-select-sm d-inline w-auto", onchange: "this.form.submit();" %>
+  <%= select_tag :sort, options_for_select([['Newest', 'desc'], ['Oldest', 'asc']], params[:sort]), class: "form-select form-select-sm d-inline w-auto", onchange: "this.form.submit();" %>
 <% end %>
 </div>
 
