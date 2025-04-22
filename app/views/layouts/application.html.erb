@@ -25,6 +25,21 @@
     </head>
 
   <body>
+  <% flash.each do |key, message| %>
+    <div class="alert <%= key == "notice" ? "alert-success" : "alert-danger" %> alert-dismissible fade show mt-3 mx-3" role="alert">
+      <%= message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
     <%= yield %>
+    <script>
+    setTimeout(function() {
+      var alert = document.querySelector('.alert');
+      if (alert) {
+        alert.classList.remove('show');
+        alert.classList.add('hide');
+      }
+    }, 3000);
+  </script>
   </body>
 </html>
