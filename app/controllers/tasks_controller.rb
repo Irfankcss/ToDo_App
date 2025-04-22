@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
     def index
       filter = params[:filter]
+      sort_order = params[:sort] == "asc" ? :asc : :desc
       @total_tasks = Task.count
       @active_tasks_count = Task.where(done: false).count
       @done_tasks_count = Task.where(done: true).count
@@ -11,7 +12,7 @@ class TasksController < ApplicationController
                  Task.where(done: false)
       else
                  Task.all
-      end
+      end.order(timestamp: sort_order)
     end
 
     def new
