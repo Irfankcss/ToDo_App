@@ -5,47 +5,73 @@
     <%= link_to "New Task", new_task_path, class: "btn btn-primary" %>
   </div>
 
-  <div class="mb-3">
-    <h4>Filter:</h4>
-    <%= link_to "Show All", tasks_path, class: "btn btn-outline-secondary btn-sm me-2" %>
-    <%= link_to "Show Done Tasks", tasks_path(filter: "done"), class: "btn btn-outline-success btn-sm me-2" %>
-    <%= link_to "Show To do", tasks_path(filter: "not_done"), class: "btn btn-outline-warning btn-sm" %>
+  <div class="row align-items-center mb-4">
+    <!-- Filter -->
+    <div class="col-md-6 col-lg-4 mb-2 mb-md-0">
+      <div class="d-flex align-items-center">
+        <%= link_to "Show All", tasks_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+        <%= link_to "Show Done Tasks", tasks_path(filter: "done"), class: "btn btn-outline-success btn-sm me-2" %>
+        <%= link_to "Show To do", tasks_path(filter: "not_done"), class: "btn btn-outline-warning btn-sm" %>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-lg-4 mb-2 mb-md-0">
+      <div>
+        <strong>All:</strong> <%= @total_tasks %> |
+        <strong>Active:</strong> <%= @active_tasks_count %> |
+        <strong>Done:</strong> <%= @done_tasks_count %>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-lg-4">
+      <div class="d-flex align-items-center justify-content-md-end">
+        <strong class="me-2">Sort:</strong>
+        <%= form_with url: tasks_path, method: :get, local: true, class: "d-inline" do %>
+          <%= hidden_field_tag :filter, params[:filter] %>
+          <%= select_tag :sort, options_for_select([['Newest', 'desc'], ['Oldest', 'asc']], params[:sort]),
+              class: "form-select form-select-sm w-auto", onchange: "this.form.submit();" %>
+        <% end %>
+      </div>
+    </div>
   </div>
-  <div class="mb-2">
-  <strong>All:</strong> <%= @total_tasks %> |
-  <strong>Active:</strong> <%= @active_tasks_count %> |
-  <strong>Done:</strong> <%= @done_tasks_count %>
-</div>
-<div class="mb-3">
-<h4>Sort by creation date:</h4>
-<%= form_with url: tasks_path, method: :get, local: true, class: "d-inline" do %>
-  <%= hidden_field_tag :filter, params[:filter] %>
-  <%= select_tag :sort, options_for_select([['Newest', 'desc'], ['Oldest', 'asc']], params[:sort]), class: "form-select form-select-sm d-inline w-auto", onchange: "this.form.submit();" %>
-<% end %>
-</div>
 
   <ul class="list-group mt-3">
-    <% @tasks.sort_by {|task| task.done ? 1:0}.each do |task| %>
+    <% @tasks.sort_by { |task| task.done ? 1 : 0 }.each do |task| %>
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong><%= task.title %></strong>
-          <small class="text-muted ms-2">
-          <small>Created: <%= task.created_at.strftime("%d.%m.%Y %H:%M") %></small>
-          </small>
-          <span class="badge bg-<%= task.done ? "success" : "warning" %> ms-2">
-            <%= task.done ? "Done" : "To do" %>
-          </span>
+
+        <div class="d-flex align-items-center">
+          <% if task.category.present? %>
+            <div class="me-3" data-bs-toggle="tooltip" title="<%= task.category.name %>">
+              <i class="<%= task.category.icon %> text-primary" style="font-size: 1.8rem;"></i>
+            </div>
+          <% end %>
+
+          <div class="tasktekst">
+            <strong><%= task.title %></strong>
+            <small class="text-muted ms-2">
+              <small>Created: <%= task.created_at.strftime("%d.%m.%Y %H:%M") %></small>
+            </small>
+            <span class="badge bg-<%= task.done ? "success" : "warning" %> ms-2">
+              <%= task.done ? "Done" : "To do" %>
+            </span>
+          </div>
         </div>
-        <div class="donebuttons">
-        <% if !task.done %>
-        <%= button_to "Mark as done", mark_done_task_path(task), method: :patch, class: "btn btn-sm btn-outline-success me-2" %>
-        <% else %>
-        <%= button_to "Mark as not done", mark_undone_task_path(task), method: :patch, class: "btn btn-sm btn-outline-warning me-2" %>
-        <% end %>
+
+        <div class="d-flex align-items-center">
+          <% if !task.done %>
+            <%= button_to "Mark as done", mark_done_task_path(task), method: :patch,
+                class: "btn btn-sm btn-outline-success me-2" %>
+          <% else %>
+            <%= button_to "Mark as not done", mark_undone_task_path(task), method: :patch,
+                class: "btn btn-sm btn-outline-warning me-2" %>
+          <% end %>
         </div>
-        <div>
+
+        <div class="d-flex align-items-center">
           <%= link_to "Edit", edit_task_path(task), class: "btn btn-sm btn-outline-primary me-2" %>
-          <%= button_to "Delete", task_path(task), method: :delete, data: { turbo: false, confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+          <%= button_to "Delete", task_path(task), method: :delete,
+              data: { turbo: false, confirm: "Are you sure?" },
+              class: "btn btn-sm btn-outline-danger" %>
         </div>
       </li>
     <% end %>

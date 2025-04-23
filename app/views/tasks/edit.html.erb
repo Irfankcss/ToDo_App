@@ -11,8 +11,13 @@
     </div>
 
     <div class="mb-3">
-      <%= f.label :timestamp, "Datum i vrijeme", class: "form-label" %>
+      <%= f.label :timestamp, "Date and Time", class: "form-label" %>
       <%= f.datetime_local_field :timestamp, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :category_id, "Category" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: "Select task category" }, class: "form-select" %>
     </div>
 
     <%= f.submit "Save Task", class: "btn btn-success" %>

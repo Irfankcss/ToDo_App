@@ -10,6 +10,11 @@
       <%= f.label :done, "Done?", class: "form-check-label", for: "doneCheck" %>
     </div>
 
+    <div class="mb-3">
+      <%= f.label :category_id, "Category" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: "Select task category" }, class: "form-select" %>
+    </div>
+
     <%= f.submit "Save Task", class: "btn btn-success" %>
   <% end %>
 </div>

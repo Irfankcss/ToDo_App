@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_20_142914) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_23_134854) do
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.boolean "done"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "timestamp", default: -> { "CURRENT_TIMESTAMP" }
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_tasks_on_category_id"
   end
+
+  add_foreign_key "tasks", "categories"
 end
